@@ -16,7 +16,7 @@ export default async function HomePage() {
 
   const mainSections   = allCats.filter((c) => c.id >= 1000 && !c.parent_id);
   const sliderArticles = articles.slice(0, SLIDER_COUNT);
-  const gridArticles   = articles.slice(SLIDER_COUNT, SLIDER_COUNT + GRID_COUNT);
+  const gridArticles   = articles.slice(0, GRID_COUNT);
 
   return (
     <>
