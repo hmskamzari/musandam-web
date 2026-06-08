@@ -72,7 +72,7 @@ export default function HeroSlider({ articles }: { articles: Article[] }) {
                 <img
                   src={a.thumbnail_url}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover object-top"
                   style={{ transform: active ? "scale(1.03)" : "scale(1)", transition: "transform 6s ease-out" }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/35 to-black/10" />

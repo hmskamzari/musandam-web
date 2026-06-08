@@ -90,7 +90,7 @@ export default function ArticleCard({ article, featured = false }: { article: Ar
               <img
                 src={article.thumbnail_url}
                 alt={article.title_ar}
-                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-110"
                 loading="eager"
                 onError={(e) => {
                   const el = e.currentTarget as HTMLImageElement;
@@ -173,7 +173,7 @@ export default function ArticleCard({ article, featured = false }: { article: Ar
             <img
               src={article.thumbnail_url}
               alt={article.title_ar}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+              className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-110"
               loading="lazy"
               onError={(e) => {
                 const el = e.currentTarget as HTMLImageElement;
