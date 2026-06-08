@@ -1,7 +1,7 @@
-@import "tailwindcss";
-
 /* ── Arabic Fonts ─────────────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
 
 @font-face {
   font-family: "Al-Jazeera";
@@ -335,6 +335,24 @@ body {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.footer-root {
+  background: linear-gradient(160deg, #0f1923 0%, #1a1a1a 50%, #0d1a1a 100%);
+}
+.footer-social {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.10);
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+.footer-social:hover { background: rgba(255,255,255,0.16); transform: scale(1.1); }
+.footer-social--ig:hover { background: rgba(193,53,132,0.28); }
 
 /* ── Mobile drawer slide-in ──────────────────────────────────────────────── */
 @keyframes slideInRight {
