@@ -131,7 +131,7 @@ export default function CategoriesGrid({ sections }: { sections: Category[] }) {
 
               {/* Category name */}
               <span
-                className="text-[0.75rem] font-bold leading-tight transition-colors duration-200"
+                className="text-[0.85rem] font-bold leading-tight transition-colors duration-200"
                 style={{ color: "var(--text-soft)" }}
               >
                 {cat.name_ar}
