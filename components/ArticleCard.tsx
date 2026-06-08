@@ -63,69 +63,34 @@ const THEMES = [
   { from: "#0f1a2a", to: "#8b7000", accent: "#c8a000" },
 ];
 
-function Thumbnail({
-  url,
-  title,
-  theme,
-}: {
-  url: string | null;
-  title: string;
-  theme: (typeof THEMES)[number];
-}) {
-  if (url) {
-    return (
-      <div className="absolute inset-0">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={url}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
-          onError={(e) => {
-            // fallback to gradient on broken image
-            const el = e.currentTarget as HTMLImageElement;
-            el.style.display = "none";
-            const parent = el.parentElement;
-            if (parent) {
-              parent.style.background = `linear-gradient(135deg, ${theme.from} 0%, ${theme.to} 100%)`;
-            }
-          }}
-        />
-        {/* Overlay so text stays readable */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-        {/* Bottom accent */}
-        <div className="absolute bottom-0 inset-x-0 h-1" style={{ background: theme.accent }} />
-      </div>
-    );
-  }
-
-  // No image — gradient placeholder
-  return (
-    <div
-      className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
-      style={{ background: `linear-gradient(135deg, ${theme.from} 0%, ${theme.to} 100%)` }}
-    >
-      <div className="absolute inset-0 flex items-center justify-center text-[6rem] font-black text-white/[0.07] select-none" aria-hidden>م</div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-      <div className="absolute bottom-0 inset-x-0 h-1" style={{ background: theme.accent }} />
-    </div>
-  );
-}
-
 export default function ArticleCard({ article, featured = false }: { article: Article; featured?: boolean }) {
   const theme = THEMES[article.id % THEMES.length];
 
   if (featured) {
     return (
-      <article className="relative rounded-2xl overflow-hidden group" style={{ boxShadow: "var(--shadow-hover)" }}>
-        <div className="absolute inset-0">
+      <article
+        className="relative rounded-2xl overflow-hidden group cursor-pointer"
+        style={{
+          boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+          transition: "box-shadow 0.3s ease, transform 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.boxShadow = "0 16px 48px rgba(0,0,0,0.28)";
+          (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(0,0,0,0.12)";
+          (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+        }}
+      >
+        <div className="absolute inset-0 overflow-hidden">
           {article.thumbnail_url ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={article.thumbnail_url}
                 alt={article.title_ar}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 loading="eager"
                 onError={(e) => {
                   const el = e.currentTarget as HTMLImageElement;
@@ -134,36 +99,39 @@ export default function ArticleCard({ article, featured = false }: { article: Ar
                   if (parent) parent.style.background = `linear-gradient(135deg, ${theme.from} 0%, ${theme.to} 100%)`;
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/5 transition-opacity duration-300 group-hover:opacity-90" />
             </>
           ) : (
             <>
-              <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+              <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
                 style={{ background: `linear-gradient(135deg, ${theme.from} 0%, ${theme.to} 100%)` }} />
               <div className="absolute top-4 left-4 text-[8rem] font-black opacity-[0.06] text-white select-none leading-none" aria-hidden>م</div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             </>
           )}
         </div>
 
-        <div className="absolute top-0 inset-x-0 h-1" style={{ background: theme.accent }} />
+        {/* Top accent line */}
+        <div className="absolute top-0 inset-x-0 h-[3px] z-10" style={{ background: theme.accent }} />
 
-        <div className="relative px-6 pb-6 pt-40">
+        <div className="relative px-6 pb-6 pt-44 z-10">
           {article.category_name && (
-            <span className="inline-block text-xs font-bold px-3 py-1 rounded-full text-white mb-3 shadow"
-              style={{ background: theme.accent }}>
+            <span
+              className="inline-block text-xs font-bold px-3 py-1 rounded-full text-white mb-3 shadow-lg backdrop-blur-sm"
+              style={{ background: theme.accent + "dd" }}
+            >
               {article.category_name}
             </span>
           )}
-          <h2 className="text-2xl font-black text-white leading-snug mb-4">
-            <Link href={`/article/${article.slug}`} className="hover:text-[--yellow] transition-colors">
+          <h2 className="text-2xl font-black text-white leading-snug mb-4 drop-shadow-md">
+            <Link href={`/article/${article.slug}`} className="hover:text-[--yellow] transition-colors duration-200">
               {article.title_ar}
             </Link>
           </h2>
-          <div className="flex flex-wrap items-center gap-4 text-xs text-white/65">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-white/70">
             {article.author_name && (
               <span className="flex items-center gap-1.5">
-                <span className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ background: "rgba(255,255,255,0.2)" }}>✍</span>
+                <span className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.15)" }}>✍</span>
                 {article.author_name}
               </span>
             )}
@@ -180,52 +148,106 @@ export default function ArticleCard({ article, featured = false }: { article: Ar
 
   return (
     <article
-      className="bg-[--card-bg] rounded-xl overflow-hidden group transition-all duration-300 hover:-translate-y-1"
-      style={{ boxShadow: "var(--shadow-sm)" }}
+      className="bg-[--card-bg] rounded-2xl overflow-hidden group flex flex-col"
+      style={{
+        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+        transition: "box-shadow 0.3s ease, transform 0.3s ease",
+        border: "1px solid var(--border)",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 36px rgba(0,0,0,0.14)";
+        (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(0,0,0,0.07)";
+        (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+      }}
     >
       {/* Thumbnail */}
-      <Link href={`/article/${article.slug}`} className="block relative h-44 overflow-hidden">
-        <Thumbnail url={article.thumbnail_url} title={article.title_ar} theme={theme} />
+      <Link href={`/article/${article.slug}`} className="block relative h-48 overflow-hidden flex-shrink-0">
 
+        {/* Image / gradient */}
+        {article.thumbnail_url ? (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={article.thumbnail_url}
+              alt={article.title_ar}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+              loading="lazy"
+              onError={(e) => {
+                const el = e.currentTarget as HTMLImageElement;
+                el.style.display = "none";
+                const parent = el.parentElement;
+                if (parent) parent.style.background = `linear-gradient(135deg, ${theme.from} 0%, ${theme.to} 100%)`;
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+          </>
+        ) : (
+          <div
+            className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+            style={{ background: `linear-gradient(135deg, ${theme.from} 0%, ${theme.to} 100%)` }}
+          >
+            <div className="absolute inset-0 flex items-center justify-center text-[5rem] font-black text-white/[0.07] select-none" aria-hidden>م</div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          </div>
+        )}
+
+        {/* Bottom accent bar */}
+        <div
+          className="absolute bottom-0 inset-x-0 h-[3px] transition-all duration-300 group-hover:h-[5px]"
+          style={{ background: theme.accent }}
+        />
+
+        {/* Category badge */}
         {article.category_name && (
           <span
-            className="absolute top-3 right-3 text-xs font-bold px-2.5 py-0.5 rounded-full text-white shadow z-10"
-            style={{ background: theme.accent }}
+            className="absolute top-3 right-3 text-[10px] font-bold px-2.5 py-0.5 rounded-full text-white shadow-md z-10 backdrop-blur-sm"
+            style={{ background: theme.accent + "cc" }}
           >
             {article.category_name}
           </span>
         )}
+
+        {/* Attachments badge */}
         {article.has_attachments && (
-          <span className="absolute bottom-3 left-3 text-xs text-white/75 bg-black/30 px-2 py-0.5 rounded-full backdrop-blur-sm z-10">
+          <span className="absolute bottom-4 left-3 text-[10px] text-white/85 bg-black/35 px-2 py-0.5 rounded-full backdrop-blur-sm z-10 font-medium">
             📎 صور
           </span>
         )}
       </Link>
 
       {/* Body */}
-      <div className="p-4 flex flex-col gap-2">
-        <h2 className="text-[0.9rem] font-bold leading-snug line-clamp-3">
-          <Link href={`/article/${article.slug}`} className="hover:text-[color:var(--teal)] transition-colors">
+      <div className="p-4 flex flex-col gap-2 flex-1">
+        <h2 className="text-[0.9rem] font-bold leading-snug line-clamp-3 flex-1">
+          <Link
+            href={`/article/${article.slug}`}
+            className="transition-colors duration-200 hover:text-[color:var(--teal)]"
+          >
             {article.title_ar}
           </Link>
         </h2>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[--muted] border-t border-[--border] pt-2">
+
+        {/* Meta row */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[--muted] border-t border-[--border] pt-2">
           {article.author_name && (
             <span className="flex items-center gap-1 min-w-0 truncate">
-              <span style={{ color: "var(--green)" }}>✍</span>
+              <span style={{ color: "var(--teal)" }}>✍</span>
               <span className="truncate">{article.author_name}</span>
             </span>
           )}
           {article.published_at && (
-            <span className="flex items-center gap-1">
-              <span style={{ color: "var(--gold)" }}>●</span>
+            <span className="flex items-center gap-1 shrink-0">
+              <span style={{ color: "var(--gold)" }}>🗓</span>
               {formatDate(article.published_at)}
             </span>
           )}
-          <span className="mr-auto flex items-center gap-1" style={{ color: "var(--pink)" }}>
+          <span className="mr-auto flex items-center gap-1 shrink-0" style={{ color: "var(--pink)" }}>
             👁 {article.views.toLocaleString("ar")}
           </span>
         </div>
+
         <CardShareBar slug={article.slug} title={article.title_ar} />
       </div>
     </article>
