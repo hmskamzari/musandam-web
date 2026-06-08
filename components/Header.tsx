@@ -23,7 +23,7 @@ export default async function Header() {
   const tickerTitles = latest.map((a) => a.title_ar);
 
   return (
-    <header className="sticky top-0 z-50" style={{ filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.18))" }}>
+    <header className="sticky top-0 z-50" style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.18)" }}>
 
       {/* ── Breaking news ticker ─────────────────────────────────────────── */}
       {tickerTitles.length > 0 && (
