@@ -7,12 +7,13 @@ interface SectionCfg {
   icon: React.ReactNode;
   color: string;
   bg: string;
+  hoverBg: string;
   animClass: string;
 }
 
 const SECTION_CONFIG: Record<number, SectionCfg> = {
   1000: {
-    color: "#29b9c7", bg: "rgba(41,185,199,0.12)", animClass: "icon-anim-news",
+    color: "#29b9c7", bg: "rgba(41,185,199,0.12)", hoverBg: "rgba(41,185,199,0.14)", animClass: "icon-anim-news",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
@@ -21,7 +22,7 @@ const SECTION_CONFIG: Record<number, SectionCfg> = {
     ),
   },
   1010: {
-    color: "#ffc200", bg: "rgba(255,194,0,0.12)", animClass: "icon-anim-chart",
+    color: "#ffc200", bg: "rgba(255,194,0,0.12)", hoverBg: "rgba(255,194,0,0.15)", animClass: "icon-anim-chart",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <path d="M3 3v18h18"/>
@@ -30,7 +31,7 @@ const SECTION_CONFIG: Record<number, SectionCfg> = {
     ),
   },
   1020: {
-    color: "#e6177a", bg: "rgba(230,23,122,0.12)", animClass: "icon-anim-person",
+    color: "#e6177a", bg: "rgba(230,23,122,0.12)", hoverBg: "rgba(230,23,122,0.14)", animClass: "icon-anim-person",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <circle cx="12" cy="8" r="4"/>
@@ -39,7 +40,7 @@ const SECTION_CONFIG: Record<number, SectionCfg> = {
     ),
   },
   1030: {
-    color: "#3a8a3a", bg: "rgba(58,138,58,0.12)", animClass: "icon-anim-calendar",
+    color: "#3a8a3a", bg: "rgba(58,138,58,0.12)", hoverBg: "rgba(58,138,58,0.15)", animClass: "icon-anim-calendar",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <rect x="3" y="4" width="18" height="18" rx="2"/>
@@ -49,7 +50,7 @@ const SECTION_CONFIG: Record<number, SectionCfg> = {
     ),
   },
   1040: {
-    color: "#29b9c7", bg: "rgba(41,185,199,0.12)", animClass: "icon-anim-pin",
+    color: "#29b9c7", bg: "rgba(41,185,199,0.12)", hoverBg: "rgba(41,185,199,0.14)", animClass: "icon-anim-pin",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/>
@@ -58,7 +59,7 @@ const SECTION_CONFIG: Record<number, SectionCfg> = {
     ),
   },
   1050: {
-    color: "#c8a000", bg: "rgba(200,160,0,0.12)", animClass: "icon-anim-building",
+    color: "#c8a000", bg: "rgba(200,160,0,0.12)", hoverBg: "rgba(200,160,0,0.16)", animClass: "icon-anim-building",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <path d="M2 20h20M5 20V8l7-5 7 5v12"/>
@@ -68,7 +69,7 @@ const SECTION_CONFIG: Record<number, SectionCfg> = {
     ),
   },
   1060: {
-    color: "#e6177a", bg: "rgba(230,23,122,0.12)", animClass: "icon-anim-people",
+    color: "#e6177a", bg: "rgba(230,23,122,0.12)", hoverBg: "rgba(230,23,122,0.14)", animClass: "icon-anim-people",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -87,46 +88,56 @@ export default function CategoriesGrid({ sections }: { sections: Category[] }) {
         {sections.map((cat, i) => {
           const cfg = SECTION_CONFIG[cat.id];
           if (!cfg) return null;
-          const { icon, color, bg, animClass } = cfg;
+          const { icon, color, bg, hoverBg, animClass } = cfg;
 
           return (
             <Link
               key={cat.id}
               href={`/category/${cat.slug}`}
-              className="cat-card group flex flex-col items-center gap-2.5 pt-5 pb-4 px-3 rounded-2xl text-center cursor-pointer"
+              className="cat-card group flex flex-col items-center gap-2.5 pt-5 pb-4 px-3 rounded-2xl text-center cursor-pointer relative"
               style={{
                 background: "var(--card-bg)",
                 border: "1px solid var(--border)",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
                 animationDelay: `${i * 0.07}s`,
-                transition: "box-shadow 0.25s cubic-bezier(0.16,1,0.3,1), transform 0.25s cubic-bezier(0.16,1,0.3,1)",
+                transition: "box-shadow 0.28s cubic-bezier(0.16,1,0.3,1), transform 0.28s cubic-bezier(0.16,1,0.3,1), background 0.28s ease, border-color 0.28s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.07)";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = hoverBg;
+                el.style.borderColor = color;
+                el.style.boxShadow = `0 12px 32px rgba(0,0,0,0.13), 0 4px 10px rgba(0,0,0,0.08)`;
+                el.style.transform = "scale(1.07) translateY(-3px)";
+                el.style.zIndex = "10";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(0,0,0,0.06)";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "var(--card-bg)";
+                el.style.borderColor = "var(--border)";
+                el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.06)";
+                el.style.transform = "scale(1) translateY(0)";
+                el.style.zIndex = "";
               }}
             >
-              {/* Icon container — lifts on hover via .icon-wrap CSS */}
+              {/* Icon container */}
               <div
                 className="icon-wrap w-12 h-12 rounded-xl flex items-center justify-center"
                 style={{ background: bg, color }}
               >
-                {/* Animation wrapper — receives per-icon keyframe via CSS */}
                 <span className={animClass} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {icon}
                 </span>
               </div>
 
               {/* Category name */}
-              <span className="text-[0.75rem] font-bold leading-tight" style={{ color: "var(--text-soft)" }}>
+              <span
+                className="text-[0.75rem] font-bold leading-tight transition-colors duration-200"
+                style={{ color: "var(--text-soft)" }}
+              >
                 {cat.name_ar}
               </span>
 
-              {/* Accent dot — fades in on hover */}
+              {/* Accent dot */}
               <div
                 className="w-1.5 h-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 style={{ background: color }}
