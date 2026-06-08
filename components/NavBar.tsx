@@ -35,6 +35,14 @@ export default function NavBar({ mainSections, subMap }: Props) {
           أخبار مسندم
         </Link>
 
+        <Link
+          href="/tghtyat"
+          className="px-4 py-3 font-medium whitespace-nowrap border-b-2 border-transparent transition-all shrink-0"
+          style={{ color: "rgba(255,255,255,0.8)" }}
+        >
+          تغطيات
+        </Link>
+
         {mainSections.map((section) => {
           const children = subMap[section.id] ?? [];
           const isOpen = open === section.id;
