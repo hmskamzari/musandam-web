@@ -1,26 +1,223 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Al-Jazeera";
+  src: url("/fonts/Al-Jazeera.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand palette — musandam.net logo */
+  --brand:        #2c2c2c;
+  --brand-deep:   #1a1a1a;
+  --green:        #3a8a3a;
+  --teal:         #29b9c7;
+  --teal-dim:     #1a8a93;
+  --yellow:       #ffc200;
+  --gold:         #8b7000;
+  --pink:         #e6177a;
+  /* Layout */
+  --bg:           #eef2f7;
+  --card-bg:      #ffffff;
+  --text:         #1a1a2e;
+  --muted:        #5a6a7a;
+  --border:       #dde3ea;
+  --shadow-sm:    0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md:    0 4px 16px rgba(0,0,0,0.11), 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-hover: 0 8px 28px rgba(0,0,0,0.15), 0 3px 8px rgba(0,0,0,0.08);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*, *::before, *::after {
+  font-family: "Al-Jazeera", 'Segoe UI', Tahoma, Arial, sans-serif !important;
+  font-feature-settings: "liga" 0, "calt" 0;
+  font-variant-ligatures: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  direction: rtl;
+}
+
+/* Card staggered entrance */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid > *:nth-child(1)  { animation: fadeInUp 0.38s 0.04s ease-out both; }
+.card-grid > *:nth-child(2)  { animation: fadeInUp 0.38s 0.09s ease-out both; }
+.card-grid > *:nth-child(3)  { animation: fadeInUp 0.38s 0.14s ease-out both; }
+.card-grid > *:nth-child(4)  { animation: fadeInUp 0.38s 0.19s ease-out both; }
+.card-grid > *:nth-child(5)  { animation: fadeInUp 0.38s 0.24s ease-out both; }
+.card-grid > *:nth-child(6)  { animation: fadeInUp 0.38s 0.29s ease-out both; }
+.card-grid > *:nth-child(n+7){ animation: fadeInUp 0.38s 0.34s ease-out both; }
+
+/* Breaking news ticker */
+@keyframes tickerRTL {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+.ticker-track {
+  display: flex;
+  gap: 3rem;
+  white-space: nowrap;
+  animation: tickerRTL 38s linear infinite;
+}
+.ticker-track:hover { animation-play-state: paused; }
+
+/* Section heading accent */
+.section-title {
+  position: relative;
+  padding-right: 1rem;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--brand);
+}
+.section-title::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, var(--yellow), var(--teal));
+  border-radius: 99px;
+}
+
+/* Category cards grid entrance */
+.cat-card {
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+/* Sub-category cards entrance */
+.sub-cat-card {
+  animation: fadeInUp 0.35s ease-out both;
+}
+
+/* Hero slider progress bar */
+@keyframes sliderProgress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Show hero slider arrows on hover */
+.hero-slider:hover button[aria-label="الخبر السابق"],
+.hero-slider:hover button[aria-label="الخبر التالي"] {
+  opacity: 1 !important;
+}
+
+/* Nav dropdown */
+.nav-dropdown {
+  display: none;
+  pointer-events: none;
+}
+.nav-item:hover .nav-dropdown {
+  display: block;
+  pointer-events: auto;
+}
+.dropdown-link {
+  color: var(--text);
+  display: block;
+}
+.dropdown-link:hover {
+  background: var(--bg);
+  color: var(--teal);
+}
+
+/* Article HTML content */
+.article-content {
+  line-height: 2;
+  font-size: 1.08rem;
+  color: var(--text);
+  text-align: justify;
+}
+.article-content h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 2rem 0 0.75rem;
+  color: var(--brand);
+  border-right: 4px solid var(--teal);
+  padding-right: 0.875rem;
+}
+.article-content h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--brand-deep);
+}
+.article-content p {
+  margin-bottom: 1.1rem;
+}
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.875rem;
+  margin: 1.5rem auto;
+  display: block;
+  box-shadow: var(--shadow-md);
+}
+.article-content blockquote {
+  border-right: 5px solid var(--teal);
+  padding: 0.875rem 1.25rem;
+  margin: 1.5rem 0;
+  background: linear-gradient(135deg, #e4f9fb 0%, #f0feff 100%);
+  border-radius: 0 0.75rem 0.75rem 0;
+  color: #1a3a3e;
+  position: relative;
+}
+.article-content a {
+  color: var(--teal-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(41,185,199,0.4);
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+.article-content a:hover {
+  color: var(--teal);
+  text-decoration-color: var(--teal);
+}
+.article-content ul, .article-content ol {
+  padding-right: 1.5rem;
+  margin-bottom: 1rem;
+}
+.article-content li { margin-bottom: 0.4rem; }
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.article-content th, .article-content td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.875rem;
+  text-align: right;
+}
+.article-content th {
+  background: var(--brand);
+  color: white;
+  font-weight: 700;
+}
+.article-content tr:nth-child(even) td { background: #f8fafc; }
+.article-content pre {
+  background: #1e2535;
+  color: #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+.article-content code {
+  background: #f1f5f9;
+  border-radius: 0.3rem;
+  font-family: monospace !important;
+  padding: 0.15em 0.4em;
+  font-size: 0.9em;
+  color: var(--pink);
 }
