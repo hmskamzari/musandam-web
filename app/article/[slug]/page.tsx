@@ -4,6 +4,8 @@ import ArticleContent from "@/components/ArticleContent";
 import ShareBar from "@/components/ShareBar";
 import { getArticleBySlug, getArticleMedia, incrementViews } from "@/lib/queries";
 
+const SITE = "https://portal.musandam.net";
+
 export async function generateMetadata({
   params,
 }: {
@@ -13,21 +15,27 @@ export async function generateMetadata({
   const article = await getArticleBySlug(slug);
   if (!article) return {};
 
-  const image = article.thumbnail_url || "https://portal.musandam.net/logo.png";
+  const url   = `${SITE}/article/${slug}`;
+  const image = article.thumbnail_url || `${SITE}/logo.webp`;
 
   return {
-    title: `${article.title_ar} — مسندم نت`,
+    title: article.title_ar,
     description: article.title_ar,
+    alternates: { canonical: url },
     openGraph: {
       title: article.title_ar,
       description: article.title_ar,
+      url,
       locale: "ar_OM",
       type: "article",
       siteName: "مسندم نت",
+      publishedTime: article.published_at ?? undefined,
+      authors: article.author_name ? [article.author_name] : undefined,
       images: [{ url: image, width: 800, height: 600, alt: article.title_ar }],
     },
     twitter: {
       card: "summary_large_image",
+      site: "@musandamnet1",
       title: article.title_ar,
       description: article.title_ar,
       images: [image],
@@ -67,9 +75,35 @@ export default async function ArticlePage({
   await getArticleMedia(article.id);
 
   const theme = THEMES[article.id % THEMES.length];
+  const url   = `${SITE}/article/${slug}`;
+  const image = article.thumbnail_url || `${SITE}/logo.webp`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title_ar,
+    url,
+    image: [image],
+    datePublished: article.published_at ?? undefined,
+    dateModified: article.published_at ?? undefined,
+    author: article.author_name
+      ? [{ "@type": "Person", name: article.author_name }]
+      : [{ "@type": "Organization", name: "مسندم نت" }],
+    publisher: {
+      "@type": "NewsMediaOrganization",
+      name: "مسندم نت",
+      logo: { "@type": "ImageObject", url: `${SITE}/logo.webp` },
+    },
+    inLanguage: "ar",
+    isAccessibleForFree: true,
+  };
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-6 w-full">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Hero header */}
       <div
@@ -79,32 +113,18 @@ export default async function ArticlePage({
           boxShadow: "var(--shadow-hover)",
         }}
       >
-        {/* Decorative */}
-        <div
-          className="absolute top-0 left-0 text-[10rem] font-black leading-none opacity-[0.06] text-white select-none"
-          aria-hidden
-        >
-          م
-        </div>
+        <div className="absolute top-0 left-0 text-[10rem] font-black leading-none opacity-[0.06] text-white select-none" aria-hidden>م</div>
         <div className="absolute top-0 inset-x-0 h-1" style={{ background: theme.accent }} />
 
         <div className="relative">
-          {/* Breadcrumb */}
           {article.category_name && (
-            <span
-              className="inline-block text-xs font-bold px-3 py-1 rounded-full text-white mb-3 shadow"
-              style={{ background: theme.accent }}
-            >
+            <span className="inline-block text-xs font-bold px-3 py-1 rounded-full text-white mb-3 shadow" style={{ background: theme.accent }}>
               {article.category_name}
             </span>
           )}
-
-          {/* Title */}
           <h1 className="text-xl sm:text-2xl font-black text-white leading-snug mb-4">
             {article.title_ar}
           </h1>
-
-          {/* Meta chips */}
           <div className="flex flex-wrap items-center gap-3 text-xs text-white/65">
             {article.author_name && (
               <span className="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1">
@@ -112,9 +132,9 @@ export default async function ArticlePage({
               </span>
             )}
             {article.published_at && (
-              <span className="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1">
+              <time dateTime={article.published_at} className="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1">
                 <span>🗓</span> {formatDate(article.published_at)}
-              </span>
+              </time>
             )}
             <span className="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1">
               <span>👁</span> {article.views.toLocaleString("ar")} مشاهدة
@@ -124,10 +144,7 @@ export default async function ArticlePage({
       </div>
 
       {/* Article content */}
-      <div
-        className="bg-[--card-bg] rounded-2xl px-6 py-6"
-        style={{ boxShadow: "var(--shadow-sm)" }}
-      >
+      <div className="bg-[--card-bg] rounded-2xl px-6 py-6" style={{ boxShadow: "var(--shadow-sm)" }}>
         <ArticleContent html={article.content_html ?? ""} />
         <ShareBar title={article.title_ar} slug={article.slug} />
       </div>

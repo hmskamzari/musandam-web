@@ -3,8 +3,17 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "تغطيات مسندم نت — أرشيف الفعاليات والأحداث",
-  description: "أرشيف تغطيات وفعاليات موقع مسندم نت الخاصة",
+  title: "تغطيات",
+  description: "أرشيف تغطيات وفعاليات موقع مسندم نت الخاصة بمحافظة مسندم — سلطنة عُمان",
+  alternates: { canonical: "https://portal.musandam.net/tghtyat" },
+  openGraph: {
+    title: "تغطيات — مسندم نت",
+    description: "أرشيف تغطيات وفعاليات محافظة مسندم",
+    url: "https://portal.musandam.net/tghtyat",
+    locale: "ar_OM",
+    type: "website",
+    siteName: "مسندم نت",
+  },
 };
 
 function stripHtml(html: string): string {

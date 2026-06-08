@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import ArticleCard from "@/components/ArticleCard";
 import Pagination from "@/components/Pagination";
 import SubcategoryCards from "@/components/SubcategoryCards";
@@ -9,6 +10,43 @@ import {
   getCategories,
 } from "@/lib/queries";
 import { stripHtml } from "@/lib/utils";
+
+const SITE = "https://portal.musandam.net";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
+  if (!category) return {};
+
+  const name = stripHtml(category.name_ar);
+  const desc = category.description_ar
+    ? stripHtml(category.description_ar)
+    : `أخبار ومقالات ${name} — مسندم نت`;
+  const url = `${SITE}/category/${slug}`;
+
+  return {
+    title: name,
+    description: desc,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${name} — مسندم نت`,
+      description: desc,
+      url,
+      locale: "ar_OM",
+      type: "website",
+      siteName: "مسندم نت",
+    },
+    twitter: {
+      card: "summary",
+      title: `${name} — مسندم نت`,
+      description: desc,
+    },
+  };
+}
 
 const PAGE_SIZE = 20;
 
