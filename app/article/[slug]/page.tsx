@@ -12,10 +12,26 @@ export async function generateMetadata({
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
   if (!article) return {};
+
+  const image = article.thumbnail_url || "https://portal.musandam.net/logo.png";
+
   return {
     title: `${article.title_ar} — مسندم نت`,
     description: article.title_ar,
-    openGraph: { title: article.title_ar, locale: "ar_OM" },
+    openGraph: {
+      title: article.title_ar,
+      description: article.title_ar,
+      locale: "ar_OM",
+      type: "article",
+      siteName: "مسندم نت",
+      images: [{ url: image, width: 800, height: 600, alt: article.title_ar }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title_ar,
+      description: article.title_ar,
+      images: [image],
+    },
   };
 }
 
