@@ -68,7 +68,7 @@ export default async function TghtyatPage() {
   const allCats = await getCategories();
 
   // Extra category IDs to include even if not direct children of 95
-  const EXTRA_IDS = new Set([116]);
+  const EXTRA_IDS = new Set([116, 117]);
 
   const sections = allCats
     .filter((c) => c.parent_id === 95 || EXTRA_IDS.has(c.id))
