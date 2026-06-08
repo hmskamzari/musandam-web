@@ -19,36 +19,37 @@ export default async function HomePage() {
   const gridArticles   = articles.slice(SLIDER_COUNT, SLIDER_COUNT + GRID_COUNT);
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-6">
-
-      {/* Hero slider */}
+    <>
+      {/* ── Full-width hero banner ── */}
       {sliderArticles.length > 0 && <HeroSlider articles={sliderArticles} />}
 
-      {/* Categories section */}
-      <CategoriesGrid sections={mainSections} />
+      {/* ── Contained content ── */}
+      <main className="max-w-6xl mx-auto px-4 py-6">
 
-      {/* Latest news grid */}
-      <div className="flex items-center justify-between mb-5">
-        <h1 className="section-title">أخبار مسندم</h1>
-        <Link
-          href="/category/18"
-          className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:opacity-80"
-          style={{ background: "var(--teal-glow)", color: "var(--teal)", border: "1px solid rgba(41,185,199,0.25)" }}
-        >
-          عرض الكل ←
-        </Link>
-      </div>
+        <CategoriesGrid sections={mainSections} />
 
-      {gridArticles.length === 0 ? (
-        <p className="text-[--muted] text-center py-16">لا توجد أخبار حتى الآن.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 card-grid">
-          {gridArticles.map((a) => (
-            <ArticleCard key={a.id} article={a} />
-          ))}
+        <div className="flex items-center justify-between mb-5">
+          <h1 className="section-title">أخبار مسندم</h1>
+          <Link
+            href="/category/18"
+            className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all hover:opacity-80"
+            style={{ background: "var(--teal-glow)", color: "var(--teal)", border: "1px solid rgba(41,185,199,0.25)" }}
+          >
+            عرض الكل ←
+          </Link>
         </div>
-      )}
 
-    </main>
+        {gridArticles.length === 0 ? (
+          <p className="text-[--muted] text-center py-16">لا توجد أخبار حتى الآن.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 card-grid">
+            {gridArticles.map((a) => (
+              <ArticleCard key={a.id} article={a} />
+            ))}
+          </div>
+        )}
+
+      </main>
+    </>
   );
 }

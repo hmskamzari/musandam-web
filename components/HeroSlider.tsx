@@ -49,8 +49,8 @@ export default function HeroSlider({ articles }: { articles: Article[] }) {
 
   return (
     <div
-      className="relative rounded-2xl overflow-hidden mb-6 hero-slider"
-      style={{ height: "clamp(320px, 46vw, 500px)" }}
+      className="relative overflow-hidden hero-slider"
+      style={{ height: "clamp(340px, 50vw, 560px)" }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
