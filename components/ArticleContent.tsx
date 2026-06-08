@@ -10,7 +10,7 @@ const VB_PT_MAP: Record<number, string> = {
   3: "0.92rem",
   4: "1rem",
   5: "1.05rem",
-  6: "1.15rem",   // user's subtitle → ~12pt / ~18px
+  6: "1.15rem",
   7: "1.35rem",
   8: "1.5rem",
   9: "1.7rem",
@@ -24,29 +24,8 @@ function normalizeFontSizes(html: string): string {
   });
 }
 
-function convertBBCode(text: string): string {
-  return text
-    // [IMG]url[/IMG]
-    .replace(/\[IMG\](https?:\/\/[^\s[\]"'<>]+?)\[\/IMG\]/gi,
-      (_, url) => `<img src="${url}" alt="" style="max-width:100%;height:auto;">`)
-    // [URL=url]text[/URL]
-    .replace(/\[URL=(['"]?)(https?:\/\/[^\]'"]+)\1\]([\s\S]*?)\[\/URL\]/gi,
-      (_, _q, url, text) => `<a href="${url}" target="_blank" rel="noopener">${text}</a>`)
-    // [URL]url[/URL]
-    .replace(/\[URL\](https?:\/\/[^\s[\]"'<>]+?)\[\/URL\]/gi,
-      (_, url) => `<a href="${url}" target="_blank" rel="noopener">${url}</a>`)
-    // [QUOTE]...[/QUOTE]
-    .replace(/\[QUOTE\]([\s\S]*?)\[\/QUOTE\]/gi,
-      (_, content) => `<blockquote>${content}</blockquote>`)
-    // [ATTACH]id[/ATTACH] — can't resolve, remove silently
-    .replace(/\[ATTACH[^\]]*\][\s\S]*?\[\/ATTACH\]/gi, "")
-    // Strip any remaining unrecognised BBCode tags
-    .replace(/\[[A-Z\/][A-Z0-9='" ]*\]/gi, "");
-}
-
 export default function ArticleContent({ html }: { html: string }) {
-  const withHtml = convertBBCode(html);
-  const normalized = normalizeFontSizes(withHtml);
+  const normalized = normalizeFontSizes(html);
   const clean = DOMPurify.sanitize(normalized, {
     ALLOWED_TAGS: [
       "p","br","div","span","a","b","i","u","strong","em","s","strike",
