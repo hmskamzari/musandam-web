@@ -8,6 +8,7 @@ import {
   countArticles,
   getCategories,
 } from "@/lib/queries";
+import { stripHtml } from "@/lib/utils";
 
 const PAGE_SIZE = 20;
 
@@ -63,9 +64,9 @@ export default async function CategoryPage({
           #
         </div>
         <p className="text-xs text-white/60 mb-1 relative">القسم</p>
-        <h1 className="text-2xl font-black text-white relative">{category.name_ar}</h1>
+        <h1 className="text-2xl font-black text-white relative">{stripHtml(category.name_ar)}</h1>
         {category.description_ar && (
-          <p className="text-sm text-white/65 mt-1 relative">{category.description_ar}</p>
+          <p className="text-sm text-white/65 mt-1 relative">{stripHtml(category.description_ar)}</p>
         )}
         <p className="text-xs text-white/50 mt-2 relative">
           {total.toLocaleString("ar")} مقالة

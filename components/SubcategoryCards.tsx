@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { Category } from "@/lib/queries";
+import { stripHtml } from "@/lib/utils";
 
 // ── Inline SVG icon helpers ───────────────────────────────────────────────────
 
@@ -246,9 +247,10 @@ export default function SubcategoryCards({
       <h2 className="section-title mb-4">الأقسام الفرعية</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {subcategories.map((cat, i) => {
+          const cleanName = stripHtml(cat.name_ar);
           const cfg = CFG[cat.id];
           const color = cfg?.color ?? parentColor;
-          const icon  = cfg?.icon ?? <LetterIcon name={cat.name_ar} color={color} />;
+          const icon  = cfg?.icon ?? <LetterIcon name={cleanName} color={color} />;
 
           return (
             <Link
@@ -272,7 +274,7 @@ export default function SubcategoryCards({
 
               {/* Label */}
               <span className="text-sm font-bold leading-snug text-[--text] group-hover:text-[--teal] transition-colors">
-                {cat.name_ar}
+                {cleanName}
               </span>
             </Link>
           );
