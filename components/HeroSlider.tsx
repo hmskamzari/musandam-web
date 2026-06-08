@@ -90,35 +90,37 @@ export default function HeroSlider({ articles }: { articles: Article[] }) {
             {/* Top accent line */}
             <div className="absolute top-0 inset-x-0 h-1" style={{ background: theme.accent }} />
 
-            {/* Slide content */}
-            <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8">
-              {a.category_name && (
-                <span
-                  className="inline-block text-xs font-black px-3 py-1 rounded-full text-white mb-3 w-fit shadow"
-                  style={{ background: theme.accent }}
-                >
-                  {a.category_name}
-                </span>
-              )}
-              <Link href={`/article/${a.slug}`} className="group/title">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-snug mb-3 line-clamp-3 group-hover/title:text-[--yellow] transition-colors">
-                  {a.title_ar}
-                </h2>
-              </Link>
-              <div className="flex flex-wrap items-center gap-3 text-xs text-white/60">
-                {a.author_name && (
-                  <span className="flex items-center gap-1 bg-white/10 rounded-full px-2.5 py-0.5">
-                    <span>✍</span> {a.author_name}
+            {/* Slide content — inner container aligned with body layout */}
+            <div className="absolute inset-0 flex flex-col justify-end">
+              <div className="max-w-6xl mx-auto w-full px-4 pb-6 sm:pb-10">
+                {a.category_name && (
+                  <span
+                    className="inline-block text-xs font-black px-3 py-1 rounded-full text-white mb-3 w-fit shadow"
+                    style={{ background: theme.accent }}
+                  >
+                    {a.category_name}
                   </span>
                 )}
-                {a.published_at && (
+                <Link href={`/article/${a.slug}`} className="group/title">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-snug mb-3 line-clamp-3 group-hover/title:text-[--yellow] transition-colors">
+                    {a.title_ar}
+                  </h2>
+                </Link>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-white/60">
+                  {a.author_name && (
+                    <span className="flex items-center gap-1 bg-white/10 rounded-full px-2.5 py-0.5">
+                      <span>✍</span> {a.author_name}
+                    </span>
+                  )}
+                  {a.published_at && (
+                    <span className="flex items-center gap-1 bg-white/10 rounded-full px-2.5 py-0.5">
+                      <span>🗓</span> {formatDate(a.published_at)}
+                    </span>
+                  )}
                   <span className="flex items-center gap-1 bg-white/10 rounded-full px-2.5 py-0.5">
-                    <span>🗓</span> {formatDate(a.published_at)}
+                    <span>👁</span> {a.views.toLocaleString("ar")} مشاهدة
                   </span>
-                )}
-                <span className="flex items-center gap-1 bg-white/10 rounded-full px-2.5 py-0.5">
-                  <span>👁</span> {a.views.toLocaleString("ar")} مشاهدة
-                </span>
+                </div>
               </div>
             </div>
           </div>
