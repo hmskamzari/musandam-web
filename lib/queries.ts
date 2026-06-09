@@ -196,3 +196,14 @@ export async function searchArticles(query: string, limit = 20): Promise<Article
 export async function getArticleMedia(_articleId: number) {
   return [];
 }
+
+export async function getSiteSettings(): Promise<Record<string, string>> {
+  if (API_URL) {
+    try {
+      return await apiFetch<Record<string, string>>("/settings.php", 86400);
+    } catch {
+      return {};
+    }
+  }
+  return {};
+}
