@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import ArticleContent from "@/components/ArticleContent";
+import dynamic from "next/dynamic";
 import ShareBar from "@/components/ShareBar";
 import { getArticleBySlug, getArticleMedia, incrementViews } from "@/lib/queries";
+
+const ArticleContent = dynamic(() => import("@/components/ArticleContent"), { ssr: false });
 
 const SITE = "https://portal.musandam.net";
 
