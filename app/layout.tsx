@@ -3,7 +3,6 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ArchiveBanner from "@/components/ArchiveBanner";
-import { getSiteSettings } from "@/lib/queries";
 
 const SITE_URL  = "https://portal.musandam.net";
 const SITE_NAME = "مسندم نت";
@@ -47,9 +46,10 @@ export const metadata: Metadata = {
   other: { "content-language": "ar" },
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const settings = await getSiteSettings();
-  const gtmId = settings.gtm_id ?? "";
+const GTM_ID = "GTM-TDJ9FTCH";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const gtmId = GTM_ID;
 
   const jsonLd = {
     "@context": "https://schema.org",
