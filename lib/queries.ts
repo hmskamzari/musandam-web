@@ -40,6 +40,9 @@ const API_URL = process.env.API_URL ?? "";
 async function apiFetch<T>(path: string, revalidate = 60): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
     next: { revalidate },
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    },
   });
   if (!res.ok) throw new Error(`API error ${res.status}: ${path}`);
   return res.json() as Promise<T>;
