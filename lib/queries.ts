@@ -159,7 +159,7 @@ export async function getArticlesByCategory(
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   if (API_URL) {
-    try { return await apiFetch<Article>(`/article.php?slug=${encodeURIComponent(slug)}`, 0); }
+    try { return await apiFetch<Article>(`/article.php?slug=${encodeURIComponent(slug)}`, 60); }
     catch { return null; }
   }
   const meta = allArticlesLocal().find((a) => a.slug === slug) ?? null;
